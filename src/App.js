@@ -30,7 +30,7 @@ class Summary extends Component {
   render () {
     return (
       <div style={{width: '40%', display: 'inline-block'}}>
-        <h2 style={defaultStyle}>{this.props.playlists && this.props.playlists.length} Text</h2>
+        <h2 style={defaultStyle}>{this.props.playlists && this.props.playlists.length} playlists</h2>
       </div>
     );
   }
@@ -40,7 +40,7 @@ class Summary2 extends Component {
   render () {
     return (
       <div style={{width: '40%', display: 'inline-block'}}>
-        <h2 style={defaultStyle}>{this.props.playlists && this.props.playlists.length} Text</h2>
+        <h2 style={defaultStyle}>{this.props.playlists && this.props.playlists.length} hours</h2>
       </div>
     );
   }
@@ -87,7 +87,7 @@ class App extends Component {
         {this.state.serverData.user ?
         <div>
           <h1 style={{...defaultStyle, 'font-size': '54px'}}>
-            {this.state.serverData.user.name}'s playlists
+            {this.state.serverData.user.name}'s playlists and Laura is spicy
           </h1>
 
           <Summary playlists={this.state.serverData.user.name}/>
