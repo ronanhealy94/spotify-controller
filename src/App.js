@@ -1,55 +1,80 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 let defaultStyle = {
-    color: '#fff',
-
+  color: '#fff'
 };
 let fakeServerData = {
   user: {
     name: 'David',
     playlists: [
       {
-        name: 'My favs',
-        songs: ['Beat It', 'Beat It', 'Beat It']
+        name: 'My favorites',
+        songs: [
+          {name: 'Beat It', duration: 1345}, 
+          {name: 'Cannelloni Makaroni', duration: 1236},
+          {name: 'Rosa helikopter', duration: 70000}
+        ]
       },
       {
-        name: 'My favs',
-        songs: ['Beat It', 'Beat It', 'Beat It']
+        name: 'Discover Weekly',
+        songs: [
+          {name: 'Beat It', duration: 1345}, 
+          {name: 'Cannelloni Makaroni', duration: 1236},
+          {name: 'Rosa helikopter', duration: 70000}
+        ]
       },
       {
-        name: 'My favs',
-        songs: ['Beat It', 'Beat It', 'Beat It']
+        name: 'Another playlist - the best!',
+        songs: [
+          {name: 'Beat It', duration: 1345}, 
+          {name: 'Cannelloni Makaroni', duration: 1236},
+          {name: 'Rosa helikopter', duration: 70000}
+        ]
+      },
+      {
+        name: 'Playlist - yeah!',
+        songs: [
+          {name: 'Beat It', duration: 1345}, 
+          {name: 'Cannelloni Makaroni', duration: 1236},
+          {name: 'Rosa helikopter', duration: 70000}
+        ]
       }
     ]
   }
 };
 
-class Summary extends Component {
-  render () {
+class PlaylistCounter extends Component {
+  render() {
     return (
-      <div style={{width: '40%', display: 'inline-block'}}>
-        <h2 style={defaultStyle}>{this.props.playlists && this.props.playlists.length} playlists</h2>
+      <div style={{...defaultStyle, width: "40%", display: 'inline-block'}}>
+        <h2>{this.props.playlists.length} playlists</h2>
       </div>
     );
   }
 }
 
-class Summary2 extends Component {
-  render () {
+class HoursCounter extends Component {
+  render() {
+    let allSongs = this.props.playlists.reduce((songs, eachPlaylist) => {
+      return songs.concat(eachPlaylist.songs)
+    }, [])
+    let totalDuration = allSongs.reduce((sum, eachSong) => {
+      return sum + eachSong.duration
+    }, 0)
+
     return (
-      <div style={{width: '40%', display: 'inline-block'}}>
-        <h2 style={defaultStyle}>{this.props.playlists && this.props.playlists.length} hours</h2>
+      <div style={{...defaultStyle, width: "40%", display: 'inline-block'}}>
+        <h2>{Math.round(totalDuration/60)} hours</h2>
       </div>
     );
   }
 }
 
 class Filter extends Component {
-  render () {
+  render() {
     return (
-      <div>
+      <div style={defaultStyle}>
         <img/>
         <input type="text"/>
       </div>
@@ -58,28 +83,26 @@ class Filter extends Component {
 }
 
 class Playlist extends Component {
-  render () {
+  render() {
     return (
-      <div style={{...defaultStyle, display: 'inline-block', width: '25%'}}>
-        <img/>
+      <div style={{...defaultStyle, display: 'inline-block', width: "25%"}}>
+        <img />
         <h3>Playlist Name</h3>
-        <ul><li>Song 1</li><li>Song 2</li><li>Song3</li></ul>
+        <ul><li>Song 1</li><li>Song 2</li><li>Song 3</li></ul>
       </div>
     );
   }
 }
 
 class App extends Component {
-
   constructor() {
     super();
     this.state = {serverData: {}}
   }
-
   componentDidMount() {
     setTimeout(() => {
-        this.setState({serverData: fakeServerData});
-  }, 1000);
+      this.setState({serverData: fakeServerData});
+    }, 1000);
   }
   render() {
     return (
@@ -87,22 +110,19 @@ class App extends Component {
         {this.state.serverData.user ?
         <div>
           <h1 style={{...defaultStyle, 'font-size': '54px'}}>
-            {this.state.serverData.user.name}'s playlists and Laura is spicy
+            {this.state.serverData.user.name}'s Playlists
           </h1>
-
-          <Summary playlists={this.state.serverData.user.name}/>
-          <Summary2 playlists={this.state.serverData.user.name}/>
-      
+          <PlaylistCounter playlists={this.state.serverData.user.playlists}/>
+          <HoursCounter playlists={this.state.serverData.user.playlists}/>
           <Filter/>
-
           <Playlist/>
           <Playlist/>
           <Playlist/>
-        </div> : 'Loading...'
+          <Playlist/>
+        </div> : <h1 style={defaultStyle}>Loading...</h1>
         }
       </div>
     );
   }
 }
-
 export default App;
